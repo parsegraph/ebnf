@@ -51,5 +51,11 @@
     "parsegraph-checkglerror": "^1.5.3",
     "parsegraph-log": "^1.7.3",
     "webgl-debug": "^2.0.1"
+  },
+  "dependencies": {
+    "parsegraph-artist": "^3.4.8",
+    "parsegraph-block": "^4.3.4",
+    "parsegraph-carousel": "^2.3.3",
+    "parsegraph-treenode": "^2.0.2"
   }
 }
