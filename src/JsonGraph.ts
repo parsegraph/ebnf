@@ -1,5 +1,11 @@
-import {DefaultBlockPalette} from 'parsegraph-block';
-import TreeNode, { BlockTreeNode, BasicTreeList, WrappingTreeList, TreeList } from 'parsegraph-treenode';
+import { DefaultBlockPalette } from "parsegraph-block";
+import TreeNode, {
+  BlockTreeNode,
+  BasicTreeList,
+  WrappingTreeList,
+  TreeList,
+} from "parsegraph-treenode";
+import Navport from 'parsegraph-viewport';
 
 class JSONASTNode {
   type: string;
@@ -19,14 +25,14 @@ export default class JsonGraph extends TreeNode {
   _title: BlockTreeNode;
   _tree: BasicTreeList;
 
-  constructor() {
-    super();
+  constructor(nav: Navport) {
+    super(nav);
     this._palette = new DefaultBlockPalette();
     this._title = new BlockTreeNode();
     this._title.setLabel("JSON");
     this._title.setOnScheduleUpdate(this.invalidate);
 
-    this._tree = new BasicTreeList(this._title, [], this._palette);
+    this._tree = new BasicTreeList(nav, this._title, [], this._palette);
     this._tree.setOnScheduleUpdate(this.invalidate);
   }
 
@@ -97,6 +103,7 @@ export default class JsonGraph extends TreeNode {
           break;
         case "list":
           const list = new WrappingTreeList(
+            this.nav(),
             new BlockTreeNode("u"),
             [],
             new DefaultBlockPalette()

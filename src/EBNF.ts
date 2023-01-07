@@ -1,14 +1,22 @@
 import { Grammars, IToken } from "ebnf";
-import TreeNode, { BasicTreeList, TreeList, BlockTreeNode, InlineTreeList, WrappingTreeList }
-from 'parsegraph-treenode';
-import {ActionCarousel} from "parsegraph-carousel";
-import {DefaultBlockPalette} from 'parsegraph-block';
-import {PaintedNode} from 'parsegraph-artist';
+import TreeNode, {
+  BasicTreeList,
+  TreeList,
+  BlockTreeNode,
+  InlineTreeList,
+  WrappingTreeList,
+} from "parsegraph-treenode";
+import Navport, { Carousel, ActionCarousel } from "parsegraph-viewport";
+import { DefaultBlockPalette } from "parsegraph-block";
+import { PaintedNode } from "parsegraph-artist";
 
 const EBNF_LITERAL_SYMBOL = Symbol("LiteralNode");
 class LiteralNode extends BlockTreeNode {
-  constructor(value?: string) {
+  _carousel: Carousel;
+
+  constructor(value?: string, carousel?: Carousel) {
     super("u", value);
+    this._carousel = carousel;
   }
 
   type() {
@@ -17,20 +25,21 @@ class LiteralNode extends BlockTreeNode {
 
   render() {
     const root = super.render();
-    console.log("LITERAL NODE RENDER");
-    const carousel = new ActionCarousel();
-    carousel.addAction("Edit", () => {
-      alert("Editing this node");
-    });
-    carousel.install(root);
+    if (this._carousel) {
+      const carousel = new ActionCarousel(this._carousel);
+      carousel.addAction("Edit", () => {
+        alert("Editing this node");
+      });
+      carousel.install(root);
+    }
     return root;
   }
 }
 
 const EBNF_CHOICE_SYMBOL = Symbol("ChoiceNode");
 class ChoiceNode extends BasicTreeList {
-  constructor(children?: TreeNode[]) {
-    super(new BlockTreeNode("u"), children, new DefaultBlockPalette());
+  constructor(nav: Navport, children?: TreeNode[]) {
+    super(nav, new BlockTreeNode("u"), children, new DefaultBlockPalette());
   }
 
   type() {
@@ -40,8 +49,8 @@ class ChoiceNode extends BasicTreeList {
 
 const EBNF_LIST_SYMBOL = Symbol("List");
 class ListNode extends InlineTreeList {
-  constructor(children?: TreeNode[]) {
-    super(new BlockTreeNode("s"), children);
+  constructor(nav: Navport, children?: TreeNode[]) {
+    super(nav, new BlockTreeNode("s"), children);
   }
 
   type() {
@@ -52,9 +61,11 @@ class ListNode extends InlineTreeList {
 const EBNF_TITLED_LIST_SYMBOL = Symbol("TitledList");
 class TitledListNode extends TreeNode {
   _list: TreeList;
-  constructor(title: TreeNode, children?: TreeNode[]) {
-    super();
+
+  constructor(nav: Navport, title: TreeNode, children?: TreeNode[]) {
+    super(nav);
     this._list = new WrappingTreeList(
+      nav,
       title,
       children,
       new DefaultBlockPalette()
@@ -83,13 +94,17 @@ export default class EBNF extends TreeNode {
   _title: BlockTreeNode;
   _tree: BasicTreeList;
 
-  constructor() {
-    super();
+  constructor(nav: Navport) {
+    super(nav);
     this._palette = new DefaultBlockPalette();
     this._title = new BlockTreeNode();
     this._title.setLabel("EBNF");
 
-    this._tree = new BasicTreeList(this._title, [], this._palette);
+    this._tree = new BasicTreeList(nav, this._title, [], this._palette);
+  }
+
+  carousel() {
+    return this.nav().carousel();
   }
 
   type() {
@@ -100,15 +115,15 @@ export default class EBNF extends TreeNode {
     console.log("Creating node", child);
     switch (child.type) {
       case "Choice":
-        return this.graphWithNewlines(new ChoiceNode(), child.children);
+        return this.graphWithNewlines(new ChoiceNode(this.nav()), child.children);
       case "SequenceOrDifference":
-        return this.graphWithNewlines(new ListNode(), child.children);
+        return this.graphWithNewlines(new ListNode(this.nav()), child.children);
       case "Production":
       case "CharClass":
       case "CharRange":
       case "Item":
       case "SubItem":
-        return this.graphWithNewlines(new ListNode(), child.children);
+        return this.graphWithNewlines(new ListNode(this.nav()), child.children);
       case "PrimaryDecoration":
         return new LiteralNode(child.text);
       case "StringLiteral":
@@ -119,6 +134,7 @@ export default class EBNF extends TreeNode {
         return new LiteralNode(child.text);
       default:
         const listNode = new TitledListNode(
+          this.nav(),
           new LiteralNode(child.type + " " + child.text)
         );
         this.graphWithNewlines(listNode.tree(), child.children);
