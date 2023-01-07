@@ -36,25 +36,15 @@ class LiteralNode extends BlockTreeNode {
   }
 }
 
-const EBNF_CHOICE_SYMBOL = Symbol("ChoiceNode");
 class ChoiceNode extends BasicTreeList {
-  constructor(nav: Navport, children?: TreeNode[]) {
-    super(nav, new BlockTreeNode("u"), children, new DefaultBlockPalette());
-  }
-
-  type() {
-    return EBNF_CHOICE_SYMBOL;
+  constructor(nav: Navport, title: string, children?: TreeNode[]) {
+    super(nav, new BlockTreeNode("u", title), children, new DefaultBlockPalette());
   }
 }
 
-const EBNF_LIST_SYMBOL = Symbol("List");
 class ListNode extends InlineTreeList {
   constructor(nav: Navport, children?: TreeNode[]) {
     super(nav, new BlockTreeNode("s"), children);
-  }
-
-  type() {
-    return EBNF_LIST_SYMBOL;
   }
 }
 
@@ -89,14 +79,17 @@ class TitledListNode extends TreeNode {
 export const EBNF_SYMBOL = Symbol("EBNF");
 export default class EBNF extends TreeNode {
   _palette: DefaultBlockPalette;
-  _text: string;
+  _grammar: string;
+  _content: string;
 
   _title: BlockTreeNode;
   _tree: BasicTreeList;
+  _useBNF:boolean;
 
   constructor(nav: Navport) {
     super(nav);
     this._palette = new DefaultBlockPalette();
+    this._useBNF = false;
     this._title = new BlockTreeNode();
     this._title.setLabel("EBNF");
 
@@ -113,33 +106,13 @@ export default class EBNF extends TreeNode {
 
   buildNode(child: IToken): TreeNode {
     console.log("Creating node", child);
-    switch (child.type) {
-      case "Choice":
-        return this.graphWithNewlines(new ChoiceNode(this.nav()), child.children);
-      case "SequenceOrDifference":
-        return this.graphWithNewlines(new ListNode(this.nav()), child.children);
-      case "Production":
-      case "CharClass":
-      case "CharRange":
-      case "Item":
-      case "SubItem":
-        return this.graphWithNewlines(new ListNode(this.nav()), child.children);
-      case "PrimaryDecoration":
+    if (child.children.length === 0) {
         return new LiteralNode(child.text);
-      case "StringLiteral":
-      case "CharCodeRange":
-      case "CharCode":
-      case "RULE_Char":
-      case "NCName":
-        return new LiteralNode(child.text);
-      default:
-        const listNode = new TitledListNode(
-          this.nav(),
-          new LiteralNode(child.type + " " + child.text)
-        );
-        this.graphWithNewlines(listNode.tree(), child.children);
-        return listNode;
     }
+    return this.graphWithNewlines(
+      new BasicTreeList(this.nav(), new BlockTreeNode("b", child.type), []),
+      child.children
+    );
   }
 
   graphWithNewlines(root: TreeList, list: IToken[]): TreeList {
@@ -149,15 +122,27 @@ export default class EBNF extends TreeNode {
     return root;
   }
 
-  setText(text: string) {
-    this._text = text;
+  setUseBNF(useBNF:boolean) {
+    this._useBNF = useBNF;
+  }
+
+  setGrammar(grammar: string) {
+    this._grammar = grammar;
+    this.invalidate();
+  }
+
+  setContent(content: string) {
+    this._content = content;
     this.invalidate();
   }
 
   render() {
     this._tree.clear();
-    const bnfParser = new Grammars.W3C.Parser(this._text);
-    const children = bnfParser.getAST(this._text);
+    if (!this._grammar || !this._content) {
+      return this._tree.root();
+    }
+    const parser = new (this._useBNF ? Grammars.BNF.Parser : Grammars.W3C.Parser)(this._grammar);
+    const children = parser.getAST(this._content);
     this.graphWithNewlines(this._tree, children.children);
     return this._tree.root();
   }
