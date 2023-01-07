@@ -51,8 +51,7 @@
   },
   "peerDependencies": {
     "parsegraph-checkglerror": "^1.5.5",
-    "parsegraph-log": "^1.7.5",
-    "webgl-debug": "^2.0.1"
+    "parsegraph-log": "^1.7.5"
   },
   "dependencies": {
     "ebnf": "^1.9.0",
