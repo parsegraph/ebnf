@@ -4185,17 +4185,17 @@ parsegraph-toradians@^1.4.10:
   resolved "https://registry.yarnpkg.com/parsegraph-toradians/-/parsegraph-toradians-1.4.10.tgz#e79797c2af66f47c0760c7ab8d8ae18ca35a4a9f"
   integrity sha512-bIwb7d293w1ffarSBMmz1Lziu8O3vNLrKmNWj9oF2Oq3SlhV3RDN+GLEq4IbLYzBmpPzpWVEtsVGmd9GcqV/Hg==
 
-parsegraph-treenode@^2.0.31:
-  version "2.0.31"
-  resolved "https://registry.yarnpkg.com/parsegraph-treenode/-/parsegraph-treenode-2.0.31.tgz#5c0a2ce6727b48c8e4cb0ac6615ee024c3553528"
-  integrity sha512-A0Dk9U+yDHVHLuNlsSLveKuTUlX38zRpsrrLtWdFZyJtehySbrQsOi6efrxz3rD136lcRMpMJOQSwcf10XkgOQ==
+parsegraph-treenode@^2.0.32:
+  version "2.0.32"
+  resolved "https://registry.yarnpkg.com/parsegraph-treenode/-/parsegraph-treenode-2.0.32.tgz#0d65e01865c76dd5dfde5bc1a58b03be3ba4ab82"
+  integrity sha512-hmopIzVTKpjrigXniy6+c+AJTq39IA/RII1ntaGvaUf9oiQMlmZwfOTkmHtCMJK5C8m4fhpFUUFym41+U8Kriw==
   dependencies:
-    parsegraph-viewport "^2.9.0"
+    parsegraph-viewport "^2.9.1"
 
-parsegraph-viewport@^2.9.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/parsegraph-viewport/-/parsegraph-viewport-2.9.0.tgz#2d00d2464da6d0c9adbe3655493c624ed5c8f79a"
-  integrity sha512-oIyKwyrAhK6AQ2v87nrN6VSGqXK07ig9bRKai/XDAIKHgpvH77IELgTLoxTNPCgT4KTzOWGaz8eXIVMhz0Er1g==
+parsegraph-viewport@^2.9.1:
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/parsegraph-viewport/-/parsegraph-viewport-2.9.1.tgz#0c2a1f3db224f5dcfa0247f3df0905f956d8e7c7"
+  integrity sha512-xLK1/pqKYs7PPYoY2cphc9YY0UK1kfgGX4lF6AQMgWpqPw9rX3xUQdl1yneS2Ab0veEEq0Rc6G7gut6V5E7noQ==
   dependencies:
     parsegraph-animatedspotlight "^2.0.41"
     parsegraph-fanpainter "^1.6.15"
