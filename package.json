@@ -56,6 +56,9 @@
   },
   "dependencies": {
     "ebnf": "^1.9.0",
-    "parsegraph-treenode": "^2.0.31"
+    "parsegraph-artist": "^3.4.52",
+    "parsegraph-block": "^4.6.9",
+    "parsegraph-treenode": "^2.0.31",
+    "parsegraph-viewport": "^2.9.0"
   }
 }
