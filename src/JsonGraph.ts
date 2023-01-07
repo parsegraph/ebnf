@@ -5,7 +5,7 @@ import TreeNode, {
   WrappingTreeList,
   TreeList,
 } from "parsegraph-treenode";
-import Navport from 'parsegraph-viewport';
+import Navport from "parsegraph-viewport";
 
 class JSONASTNode {
   type: string;
