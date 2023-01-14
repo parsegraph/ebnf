@@ -38,7 +38,12 @@ class LiteralNode extends BlockTreeNode {
 
 class ChoiceNode extends BasicTreeList {
   constructor(nav: Navport, title: string, children?: TreeNode[]) {
-    super(nav, new BlockTreeNode("u", title), children, new DefaultBlockPalette());
+    super(
+      nav,
+      new BlockTreeNode("u", title),
+      children,
+      new DefaultBlockPalette()
+    );
   }
 }
 
@@ -84,7 +89,7 @@ export default class EBNF extends TreeNode {
 
   _title: BlockTreeNode;
   _tree: BasicTreeList;
-  _useBNF:boolean;
+  _useBNF: boolean;
 
   constructor(nav: Navport) {
     super(nav);
@@ -107,7 +112,7 @@ export default class EBNF extends TreeNode {
   buildNode(child: IToken): TreeNode {
     console.log("Creating node", child);
     if (child.children.length === 0) {
-        return new LiteralNode(child.text);
+      return new LiteralNode(child.text);
     }
     return this.graphWithNewlines(
       new BasicTreeList(this.nav(), new BlockTreeNode("b", child.type), []),
@@ -122,7 +127,7 @@ export default class EBNF extends TreeNode {
     return root;
   }
 
-  setUseBNF(useBNF:boolean) {
+  setUseBNF(useBNF: boolean) {
     this._useBNF = useBNF;
   }
 
@@ -141,7 +146,9 @@ export default class EBNF extends TreeNode {
     if (!this._grammar || !this._content) {
       return this._tree.root();
     }
-    const parser = new (this._useBNF ? Grammars.BNF.Parser : Grammars.W3C.Parser)(this._grammar);
+    const parser = new (
+      this._useBNF ? Grammars.BNF.Parser : Grammars.W3C.Parser
+    )(this._grammar);
     const children = parser.getAST(this._content);
     this.graphWithNewlines(this._tree, children.children);
     return this._tree.root();

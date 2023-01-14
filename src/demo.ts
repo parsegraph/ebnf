@@ -2,9 +2,9 @@ import Navport, { render } from "parsegraph-viewport";
 import { BlockNode } from "parsegraph-block";
 import EBNF from "./EBNF";
 import Direction, { Alignment, DirectionNode } from "parsegraph-direction";
-import {PaintedNode, DOMContent, DOMContentArtist } from "parsegraph-artist";
-import TreeNode, {BasicTreeList} from 'parsegraph-treenode';
-import {BasicProjector} from 'parsegraph-projector';
+import { PaintedNode, DOMContent, DOMContentArtist } from "parsegraph-artist";
+import TreeNode, { BasicTreeList } from "parsegraph-treenode";
+import { BasicProjector } from "parsegraph-projector";
 
 const artist = new DOMContentArtist();
 class TextContent extends TreeNode {
@@ -41,11 +41,12 @@ class TextContent extends TreeNode {
     c.style.fontSize = size + "px";
     c.style.pointerEvents = "all";
     c.innerText = this.text();
-    c.addEventListener("keypress", (e)=>{
+    c.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
-        this._text = c.innerText;
+        this._text = c.textContent;
+        console.log(this._text);
         this._editing = false;
-        //node.layoutChanged();
+        // node.layoutChanged();
         this.invalidate();
         this.nav().scheduleRepaint();
         console.log("ENTER");
@@ -54,9 +55,9 @@ class TextContent extends TreeNode {
     const val = new DOMContent(() => c);
     val.setArtist(artist);
     val.setNode(node);
-    val.setOnScheduleUpdate(()=>{
+    val.setOnScheduleUpdate(() => {
       node.layoutChanged();
-      //this.invalidate();
+      // this.invalidate();
       this.nav().scheduleRepaint();
     });
     node.setValue(val);
@@ -94,7 +95,7 @@ string                ::= '"' (([#x20-#x21] | [#x23-#x5B] | [#x5D-#xFFFF]) | #x5
 HEXDIG                ::= [a-fA-F0-9]
 `;
 
-  /*fetch("/json.grammar").then(async (resp: any) => {
+  /* fetch("/json.grammar").then(async (resp: any) => {
     const grammar = await resp.text();
     ebnf.setGrammar(grammar);
     ebnf.setContent(JSON.stringify({foo:[1,2,"42"]}));
@@ -103,19 +104,23 @@ HEXDIG                ::= [a-fA-F0-9]
     viewport.showInCamera(ebnf.root());
   });*/
 
- const list = new BasicTreeList(viewport, new TextContent(viewport, "BasicTreeList"), []);
+  const list = new BasicTreeList(
+    viewport,
+    new TextContent(viewport, "BasicTreeList"),
+    []
+  );
 
- for (let i = 0; i < 10; ++i) {
-   list.appendChild(new TextContent(viewport, "No time " + i));
- }
+  for (let i = 0; i < 10; ++i) {
+    list.appendChild(new TextContent(viewport, "No time " + i));
+  }
 
- const proj = new BasicProjector();
- proj.glProvider();
- proj.overlay();
+  const proj = new BasicProjector();
+  proj.glProvider();
+  proj.overlay();
   viewport.setRoot(list.root());
-  list.setOnScheduleUpdate(()=>{
+  list.setOnScheduleUpdate(() => {
     console.log("Scheduling update");
-    viewport.setRoot(list.root())
+    viewport.setRoot(list.root());
     viewport.scheduleRepaint();
     viewport.showInCamera(null);
   });
