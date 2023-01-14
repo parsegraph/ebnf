@@ -56,6 +56,6 @@
   },
   "dependencies": {
     "ebnf": "^1.9.0",
-    "parsegraph-treenode": "^2.0.32"
+    "parsegraph-treenode": "^2.0.34"
   }
 }
