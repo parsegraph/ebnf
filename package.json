@@ -60,7 +60,7 @@
     "parsegraph-block": "^4.6.17",
     "parsegraph-direction": "^2.2.1",
     "parsegraph-projector": "^1.14.6",
-    "parsegraph-treenode": "^2.0.34",
+    "parsegraph-treenode": "^2.0.36",
     "parsegraph-viewport": "^2.9.8"
   }
 }
