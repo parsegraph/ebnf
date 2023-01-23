@@ -56,11 +56,11 @@
   },
   "dependencies": {
     "ebnf": "^1.9.0",
-    "parsegraph-artist": "^3.4.58",
-    "parsegraph-block": "^4.6.17",
-    "parsegraph-direction": "^2.2.3",
-    "parsegraph-projector": "^1.14.6",
-    "parsegraph-treenode": "^2.0.36",
+    "parsegraph-artist": "^3.4.61",
+    "parsegraph-block": "^4.6.20",
+    "parsegraph-direction": "^2.2.4",
+    "parsegraph-projector": "^1.14.8",
+    "parsegraph-treenode": "^2.0.38",
     "parsegraph-viewport": "^2.9.8"
   }
 }
