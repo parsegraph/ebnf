@@ -1,6 +1,6 @@
 {
   "name": "parsegraph-ebnf",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "ebnf",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
