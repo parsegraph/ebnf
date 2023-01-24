@@ -31,5 +31,5 @@ jobs:
     - run: git push --tags
     - uses: actions/upload-artifact@v2
       with:
-        name: parsegraph-ebnf-dev-${{ github.run_number }}-${{ matrix.node-version }}
-        path: parsegraph-ebnf-dev.tgz
+        name: parsegraph-json-dev-${{ github.run_number }}-${{ matrix.node-version }}
+        path: parsegraph-json-dev.tgz

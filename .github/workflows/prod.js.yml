@@ -32,5 +32,5 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
     - uses: actions/upload-artifact@v2
       with:
-        name: parsegraph-ebnf-prod-${{ github.run_number }}
-        path: parsegraph-ebnf-prod.tgz
+        name: parsegraph-json-prod-${{ github.run_number }}
+        path: parsegraph-json-prod.tgz

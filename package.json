@@ -1,19 +1,19 @@
 {
-  "name": "parsegraph-ebnf",
+  "name": "parsegraph-json",
   "version": "2.0.8",
-  "description": "ebnf",
+  "description": "json",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/parsegraph/ebnf.git"
+    "url": "git+ssh://git@github.com/parsegraph/json.git"
   },
   "author": "Rainback, Inc.",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/parsegraph/ebnf/issues"
+    "url": "https://github.com/parsegraph/json/issues"
   },
-  "homepage": "https://github.com/parsegraph/ebnf#readme",
+  "homepage": "https://github.com/parsegraph/json#readme",
   "devDependencies": {
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.20.12",
@@ -55,7 +55,6 @@
     "parsegraph-log": "^1.9.2"
   },
   "dependencies": {
-    "ebnf": "^1.9.0",
     "parsegraph-artist": "^3.4.62",
     "parsegraph-block": "^4.6.20",
     "parsegraph-direction": "^2.2.4",
